@@ -77,50 +77,50 @@ console.log(compChoice);
 //const let compSelection = undefined; -> breaks program
 const compSelection = compChoice;
 
-//function decideOutcome(userSelection, compSelection) {
-//compare both choice
-//option 1: same choice (draw)
-if (userSelection === compSelection) {
-    console.log("it's a tie!")
-}
-//other options: user | computer
-//option 2: rock | paper 
-//option 3: rock | scissors
-else if (userSelection === "rock") {
-    if (compSelection === "paper") {
-        console.log("You lost!")
+function decideOutcome(userSelection, compSelection) {
+    //compare both choice
+    //option 1: same choice (draw)
+    if (userSelection === compSelection) {
+        console.log("it's a tie!")
     }
-    else if (compSelection === "scissors") {
-        console.log("You win!")
+    //other options: user | computer
+    //option 2: rock | paper 
+    //option 3: rock | scissors
+    else if (userSelection === "rock") {
+        if (compSelection === "paper") {
+            console.log("You lost!")
+        }
+        else if (compSelection === "scissors") {
+            console.log("You win!")
+        }
+        else {
+            console.log("Something went wrong when comparing choices")
+        }
+    }
+    //option 4: paper | scissors
+    //option 5: paper | rock
+    else if (userSelection === "paper") {
+        if (compSelection === "scissors") {
+            console.log("You lost!")
+        }
+        if (compSelection === "rock") {
+            console.log("You win!")
+        }
+    }
+    //option 6: scissors | rock 
+    //option 7: scissors | paper
+    else if (userSelection === "scissors") {
+        if (compSelection === "rock") {
+            console.log("You lost!")
+        }
+        if (compSelection === "paper") {
+            console.log("You win!")
+        }
     }
     else {
-        console.log("Something went wrong when comparing choices")
-    }
+        console.log("something went wrong when deciding the outcome")
+    }// end of if statement
 }
-//option 4: paper | scissors
-//option 5: paper | rock
-else if (userSelection === "paper") {
-    if (compSelection === "scissors") {
-        console.log("You lost!")
-    }
-    if (compSelection === "rock") {
-        console.log("You win!")
-    }
-}
-//option 6: scissors | rock 
-//option 7: scissors | paper
-else if (userSelection === "scissors") {
-    if (compSelection === "rock") {
-        console.log("You lost!")
-    }
-    if (compSelection === "paper") {
-        console.log("You win!")
-    }
-}
-else {
-    console.log("something went wrong when deciding the outcome")
-}// end of if statement
-//}
 
 //declare the outcome of play 
-//decideOutcome(userSelection, compChoice);
+decideOutcome(userSelection, compChoice);
