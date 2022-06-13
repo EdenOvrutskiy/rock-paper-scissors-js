@@ -48,9 +48,9 @@ function pickZeroOneOrTwo() {
 
     //3 is rather unlikely, so 0, 1,and 2 are nearly 33% each
 }
-const zeroOneOrTwo = pickZeroOneOrTwo();
 //map each digit to either rock,paper or scissors:
-function generateCompChoice(zeroOneOrTwo) {
+function computerPlay() {
+    zeroOneOrTwo = pickZeroOneOrTwo();
     let compSelection;
     if (zeroOneOrTwo === 0) {
         compSelection = "rock";
@@ -71,11 +71,11 @@ function generateCompChoice(zeroOneOrTwo) {
     return compSelection;
 }
 
-const compChoice = generateCompChoice(zeroOneOrTwo);
-console.log(compChoice);
+
+const compSelection = computerPlay();
+console.log(compSelection);
 
 //const let compSelection = undefined; -> breaks program
-const compSelection = compChoice;
 
 function decideOutcome(userSelection, compSelection) {
     //compare both choice
@@ -123,4 +123,4 @@ function decideOutcome(userSelection, compSelection) {
 }
 
 //declare the outcome of play 
-decideOutcome(userSelection, compChoice);
+decideOutcome(userSelection, compSelection);
