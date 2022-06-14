@@ -1,9 +1,13 @@
 //rock paper scissors vs. the computer
 console.log("Welcome to rock, paper scissors!");
 
-
-//deny anything that isn't rock/paper/scissors:
 function rejectBadInput(userSelection) {
+    //deny anything that isn't rock/paper/scissors:
+    //console.log("initial input", userSelection)
+    //make sure user input is one of the three
+    //account for both capitalizated / lowercase input
+    userSelection = userSelection.toLowerCase()
+    //console.log("lowercased input: ", userSelection)
     if (userSelection == "rock") {
     }
     else if (userSelection == "paper") {
@@ -13,6 +17,7 @@ function rejectBadInput(userSelection) {
     else {
         console.log("your input: ", userSelection, "was rejected");
     }
+    return userSelection;
     /*
     //alternative version with logical operators
     if ((userSelection != "rock")
@@ -26,12 +31,9 @@ function rejectBadInput(userSelection) {
 function playerPlay() {
     //prompt the user to select rock,paper or scissors
     let userSelection = prompt("pick one: ")
-    console.log("initial input", userSelection)
-    //make sure user input is one of the three
-    //account for both capitalizated / lowercase input
-    userSelection = userSelection.toLowerCase()
-    console.log("lowercased input: ", userSelection)
-    rejectBadInput(userSelection);
+    userSelection = rejectBadInput(userSelection);
+    console.log("You've picked ", userSelection, "!");
+
     return userSelection;
 }
 
@@ -75,8 +77,6 @@ function computerPlay() {
     console.log("the computer picked: ", compSelection);
     return compSelection;
 }
-
-
 
 //const compSelection = computerPlay();
 //console.log(compSelection);
