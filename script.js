@@ -1,38 +1,38 @@
 //rock paper scissors vs. the computer
 console.log("Welcome to rock, paper scissors!");
 
-function rejectBadInput(userSelection) {
+function rejectBadInput(playerSelection) {
     //deny anything that isn't rock/paper/scissors:
     //make sure user input is one of the three
     //account for both capitalizated / lowercase input
-    userSelection = userSelection.toLowerCase()
-    if (userSelection == "rock") {
+    playerSelection = playerSelection.toLowerCase()
+    if (playerSelection == "rock") {
     }
-    else if (userSelection == "paper") {
+    else if (playerSelection == "paper") {
     }
-    else if (userSelection == "scissors") {
+    else if (playerSelection == "scissors") {
     }
     else {
-        console.log("your input: ", userSelection, "was rejected");
+        console.log("your input: ", playerSelection, "was rejected");
     }
-    return userSelection;
+    return playerSelection;
     /*
     //alternative version with logical operators
-    if ((userSelection != "rock")
-        && (userSelection != "paper")
-        && (userSelection != "scissors")) {
-        console.log("your input: ", userSelection, "was rejected");
+    if ((playerSelection != "rock")
+        && (playerSelection != "paper")
+        && (playerSelection != "scissors")) {
+        console.log("your input: ", playerSelection, "was rejected");
     }
     */
 }
 
 function playerPlay() {
     //prompt the user to select rock,paper or scissors
-    let userSelection = prompt("pick one: ")
-    userSelection = rejectBadInput(userSelection);
-    console.log("You've picked ", userSelection, "!");
+    let playerSelection = prompt("pick one: ")
+    playerSelection = rejectBadInput(playerSelection);
+    console.log("You've picked ", playerSelection, "!");
 
-    return userSelection;
+    return playerSelection;
 }
 
 //have the computer make it's own random selection
@@ -79,17 +79,17 @@ function computerPlay() {
 
 //const let compSelection = undefined; -> breaks program
 
-function playRound(userSelection, compSelection) {
+function playRound(playerSelection, compSelection) {
     //compare both choices
     //
     //option 1: same choice (draw)
-    if (userSelection === compSelection) {
+    if (playerSelection === compSelection) {
         return ("it's a tie!")
     }
     //other options: user | computer
     //option 2: rock | paper 
     //option 3: rock | scissors
-    else if (userSelection === "rock") {
+    else if (playerSelection === "rock") {
         if (compSelection === "paper") {
             return ("You lost!")
         }
@@ -102,7 +102,7 @@ function playRound(userSelection, compSelection) {
     }
     //option 4: paper | scissors
     //option 5: paper | rock
-    else if (userSelection === "paper") {
+    else if (playerSelection === "paper") {
         if (compSelection === "scissors") {
             return ("You lost!")
         }
@@ -112,7 +112,7 @@ function playRound(userSelection, compSelection) {
     }
     //option 6: scissors | rock 
     //option 7: scissors | paper
-    else if (userSelection === "scissors") {
+    else if (playerSelection === "scissors") {
         if (compSelection === "rock") {
             return ("You lost!")
         }
@@ -145,9 +145,9 @@ function game() {
     let playerScore = 0;
     let compScore = 0;
     for (i = 0; i < 5; ++i) {
-        userSelection = playerPlay();
+        playerSelection = playerPlay();
         compSelection = computerPlay();
-        let outcome = (playRound(userSelection, compSelection));
+        let outcome = (playRound(playerSelection, compSelection));
         console.log(outcome);
         if (outcome === "You win!") {
             ++playerScore;
