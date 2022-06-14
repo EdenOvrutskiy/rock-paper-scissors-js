@@ -1,11 +1,22 @@
+//TODO
+//bug: can't stretch a single string across multiple lines
+//     using a backslash (\) like in python- could be my editor?
+//     (will use +'s for now)
+//bug: pressing ESC crashes the program - related to null
+//bug: don't remember at which function: if return statement omitted,
+//     it caused unexpected behavior that wasn't caught
+//     by my else statements - related to _unknown_ or 
+//     undefined.
+//     I will try omitting return statements to replicate
+
 //rock paper scissors vs. the computer
 console.log("Welcome to rock, paper scissors!");
 
 function rejectBadInput(playerSelection) {
     //deny anything that isn't rock/paper/scissors:
-    //make sure user input is one of the three
     //account for both capitalizated / lowercase input
     playerSelection = playerSelection.toLowerCase()
+    //make sure user input is one of the three
     if (playerSelection == "rock") {
     }
     else if (playerSelection == "paper") {
@@ -19,9 +30,9 @@ function rejectBadInput(playerSelection) {
     /*
     //alternative version with logical operators
     if ((playerSelection != "rock")
-        && (playerSelection != "paper")
-        && (playerSelection != "scissors")) {
-        console.log("your input: ", playerSelection, "was rejected");
+         && (playerSelection != "paper")
+         && (playerSelection != "scissors")) {
+         console.log("your input: ", playerSelection, "was rejected");
     }
     */
 }
@@ -74,8 +85,8 @@ function computerPlay() {
     }
     console.log("the computer picked: ", compSelection);
     return compSelection;
-}
 
+}
 
 //const let compSelection = undefined; -> breaks program
 
@@ -139,6 +150,23 @@ function keepScore(playerScore, compScore, outcome) {
     return playerScore, compScore;
 }
 
+function reportGameOutcome(playerScore, compScore) {
+    console.log("The outcome of this 5-round game...");
+    if (playerScore > compScore) {
+        console.log("You are declared the winner :)");
+    }
+    else if (playerScore < compScore) {
+        console.log("You are declared the loser :(");
+    }
+    else if (playerScore === compScore) {
+        console.log("it's a draw!");
+    }
+    else {
+        console.log("Failed to compute the outcome of the match.");
+    }
+}
+
+
 //play a a few rounds
 //while keeping score
 function game() {
@@ -162,7 +190,12 @@ function game() {
         else {
             console.log("Failed to keep score this round");
         }
-        console.log(`score: \nplayer: ${playerScore} | comp: ${compScore}`);
+        let finalScore = "score: \n\player: " + playerScore
+            + " | comp: " + compScore;
+        console.log(finalScore);
     }
+    //report winner or loser of final game
+    reportGameOutcome(playerScore, compScore);
+
 }
 game();
