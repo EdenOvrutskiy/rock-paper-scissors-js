@@ -3,11 +3,9 @@ console.log("Welcome to rock, paper scissors!");
 
 function rejectBadInput(userSelection) {
     //deny anything that isn't rock/paper/scissors:
-    //console.log("initial input", userSelection)
     //make sure user input is one of the three
     //account for both capitalizated / lowercase input
     userSelection = userSelection.toLowerCase()
-    //console.log("lowercased input: ", userSelection)
     if (userSelection == "rock") {
     }
     else if (userSelection == "paper") {
@@ -78,8 +76,6 @@ function computerPlay() {
     return compSelection;
 }
 
-//const compSelection = computerPlay();
-//console.log(compSelection);
 
 //const let compSelection = undefined; -> breaks program
 
@@ -129,8 +125,6 @@ function playRound(userSelection, compSelection) {
     }// end of if statement
 }//end of playRound
 
-//declare the outcome of play 
-//console.log(playRound(userSelection, compSelection));
 
 function keepScore(playerScore, compScore, outcome) {
     if (outcome === "You win!") {
@@ -171,5 +165,4 @@ function game() {
         console.log(`score: \nplayer: ${playerScore} | comp: ${compScore}`);
     }
 }
-
 game();
