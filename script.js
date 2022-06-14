@@ -1,12 +1,6 @@
 //rock paper scissors vs. the computer
 console.log("Welcome to rock, paper scissors!");
-//prompt the user to select rock,paper or scissors
-let userSelection = prompt("pick one: ")
-console.log("initial input", userSelection)
-//make sure user input is one of the three
-//account for both capitalizated / lowercase input
-userSelection = userSelection.toLowerCase()
-console.log("lowercased input: ", userSelection)
+
 
 //deny anything that isn't rock/paper/scissors:
 function rejectBadInput(userSelection) {
@@ -28,7 +22,18 @@ function rejectBadInput(userSelection) {
     }
     */
 }
-rejectBadInput(userSelection);
+
+function playerPlay() {
+    //prompt the user to select rock,paper or scissors
+    let userSelection = prompt("pick one: ")
+    console.log("initial input", userSelection)
+    //make sure user input is one of the three
+    //account for both capitalizated / lowercase input
+    userSelection = userSelection.toLowerCase()
+    console.log("lowercased input: ", userSelection)
+    rejectBadInput(userSelection);
+    return userSelection;
+}
 
 //have the computer make it's own random selection
 
@@ -72,55 +77,99 @@ function computerPlay() {
 }
 
 
-const compSelection = computerPlay();
-console.log(compSelection);
+
+//const compSelection = computerPlay();
+//console.log(compSelection);
 
 //const let compSelection = undefined; -> breaks program
 
-function decideOutcome(userSelection, compSelection) {
-    //compare both choice
+function playRound(userSelection, compSelection) {
+    //compare both choices
+    //
     //option 1: same choice (draw)
     if (userSelection === compSelection) {
-        console.log("it's a tie!")
+        return ("it's a tie!")
     }
     //other options: user | computer
     //option 2: rock | paper 
     //option 3: rock | scissors
     else if (userSelection === "rock") {
         if (compSelection === "paper") {
-            console.log("You lost!")
+            return ("You lost!")
         }
         else if (compSelection === "scissors") {
-            console.log("You win!")
+            return ("You win!")
         }
         else {
-            console.log("Something went wrong when comparing choices")
+            return ("Something went wrong when comparing choices")
         }
     }
     //option 4: paper | scissors
     //option 5: paper | rock
     else if (userSelection === "paper") {
         if (compSelection === "scissors") {
-            console.log("You lost!")
+            return ("You lost!")
         }
         if (compSelection === "rock") {
-            console.log("You win!")
+            return ("You win!")
         }
     }
     //option 6: scissors | rock 
     //option 7: scissors | paper
     else if (userSelection === "scissors") {
         if (compSelection === "rock") {
-            console.log("You lost!")
+            return ("You lost!")
         }
         if (compSelection === "paper") {
-            console.log("You win!")
+            return ("You win!")
         }
     }
     else {
-        console.log("something went wrong when deciding the outcome")
+        return ("something went wrong when deciding the outcome")
     }// end of if statement
-}
+}//end of playRound
 
 //declare the outcome of play 
-decideOutcome(userSelection, compSelection);
+//console.log(playRound(userSelection, compSelection));
+
+function keepScore(playerScore, compScore, outcome) {
+    if (outcome === "You win!") {
+        ++playerScore;
+    }
+    else if (outcome === "You lost!") {
+        ++compScore;
+    }
+    else {
+        console.log("Failed to keep score this round");
+    }
+    return playerScore, compScore;
+}
+
+//play a a few rounds
+//while keeping score
+function game() {
+    let playerScore = 0;
+    let compScore = 0;
+    for (i = 0; i < 5; ++i) {
+        userSelection = playerPlay();
+        compSelection = computerPlay();
+        let outcome = (playRound(userSelection, compSelection));
+        console.log(outcome);
+        if (outcome === "You win!") {
+            ++playerScore;
+        }
+        else if (outcome === "You lost!") {
+            ++compScore;
+        }
+        else if (outcome === "it's a tie!") {
+            ++compScore;
+            ++playerScore;
+        }
+        else {
+            console.log("Failed to keep score this round");
+        }
+        console.log(`score: \nplayer: ${playerScore} | comp: ${compScore}`);
+    }
+}
+
+game();
