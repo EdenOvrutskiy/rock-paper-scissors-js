@@ -1,13 +1,9 @@
 //TODO
+//bug: clicking a button multiple times keeps creating divs
 //bug: can't stretch a single string across multiple lines
 //     using a backslash (\) like in python- could be my editor?
 //     (will use +'s for now)
 //bug: pressing ESC crashes the program - related to null
-//bug: don't remember at which function: if return statement omitted,
-//     it caused unexpected behavior that wasn't caught
-//     by my else statements - related to _unknown_ or 
-//     undefined.
-//     I will try omitting return statements to replicate
 
 //rock paper scissors vs. the computer
 console.log("Welcome to rock, paper scissors!");
@@ -37,6 +33,7 @@ function rejectBadInput(playerSelection) {
     */
 }
 
+/*
 function playerPlay() {
     //prompt the user to select rock,paper or scissors
     let playerSelection = prompt("pick one: ")
@@ -45,6 +42,7 @@ function playerPlay() {
 
     return playerSelection;
 }
+*/
 
 //have the computer make it's own random selection
 
@@ -85,20 +83,19 @@ function computerPlay() {
     }
     console.log("the computer picked: ", compSelection);
     return compSelection;
-
 }
 
 //const let compSelection = undefined; -> breaks program
 
-function playRound(playerSelection, compSelection) {
-    //what is passed to here from addEventListener()?
-    console.log('first paremeter passed (click):', playerSelection);
-    //2nd parameter cannot be passed normally through event listener.:
-    //console.log('second paremeter passed (click to see):', compSelection);
+function playRound(eventObject) {
+    const playerSelection = eventObject.target.classList.value;
+    const compSelection = computerPlay();
+
     //compare both choices
     //
     //option 1: same choice (draw)
     if (playerSelection === compSelection) {
+        displayResult("it's a tie!");
         return ("it's a tie!")
     }
     //other options: user | computer
@@ -136,7 +133,8 @@ function playRound(playerSelection, compSelection) {
         }
     }
     else {
-        return ("something went wrong when deciding the outcome")
+        console.log("something went wrong when deciding the outcome");
+        return ("something went wrong when deciding the outcome");
     }// end of if statement
 }//end of playRound
 
@@ -207,15 +205,29 @@ function game() {
 //create three buttons, one for each selection.
 const rockButton = document.createElement('button');
 document.body.appendChild(rockButton);
-rockButton.textContent = "rock-solid";
+rockButton.textContent = "rock";
 rockButton.classList.add('rock');
 
 const paperButton = document.createElement('button');
 document.body.appendChild(paperButton);
+paperButton.textContent = "paper";
+paperButton.classList.add('paper');
 
 const scissorsButton = document.createElement('button');
 document.body.appendChild(scissorsButton);
+scissorsButton.textContent = "scissors";
+scissorsButton.classList.add('scissors');
 
 //add an event listener to the buttons that call playRound()
-rockButton.addEventListener('click', (e) => playRound(e));
 //with the correct playerSelection every time a button is clicked
+rockButton.addEventListener('click', (e) => playRound(e));
+paperButton.addEventListener('click', (e) => playRound(e));
+scissorsButton.addEventListener('click', (e) => playRound(e));
+
+//create a DOM element that will display the result of a round
+
+function displayResult(result) {
+    const resultField = document.createElement('div');
+    document.body.appendChild(resultField);
+    resultField.textContent = result;
+}
