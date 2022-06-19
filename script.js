@@ -91,6 +91,10 @@ function computerPlay() {
 //const let compSelection = undefined; -> breaks program
 
 function playRound(playerSelection, compSelection) {
+    //what is passed to here from addEventListener()?
+    console.log('first paremeter passed (click):', playerSelection);
+    //2nd parameter cannot be passed normally through event listener.:
+    //console.log('second paremeter passed (click to see):', compSelection);
     //compare both choices
     //
     //option 1: same choice (draw)
@@ -172,30 +176,46 @@ function reportGameOutcome(playerScore, compScore) {
 function game() {
     let playerScore = 0;
     let compScore = 0;
-    for (i = 0; i < 5; ++i) {
-        playerSelection = playerPlay();
-        compSelection = computerPlay();
-        let outcome = (playRound(playerSelection, compSelection));
-        console.log(outcome);
-        if (outcome === "You win!") {
-            ++playerScore;
-        }
-        else if (outcome === "You lost!") {
-            ++compScore;
-        }
-        else if (outcome === "it's a tie!") {
-            ++compScore;
-            ++playerScore;
-        }
-        else {
-            console.log("Failed to keep score this round");
-        }
-        let finalScore = "score: \n\player: " + playerScore
-            + " | comp: " + compScore;
-        console.log(finalScore);
+    //for (i = 0; i < 5; ++i) {
+    playerSelection = playerPlay();
+    compSelection = computerPlay();
+    let outcome = (playRound(playerSelection, compSelection));
+    console.log(outcome);
+    if (outcome === "You win!") {
+        ++playerScore;
     }
+    else if (outcome === "You lost!") {
+        ++compScore;
+    }
+    else if (outcome === "it's a tie!") {
+        ++compScore;
+        ++playerScore;
+    }
+    else {
+        console.log("Failed to keep score this round");
+    }
+    let finalScore = "score: \n\player: " + playerScore
+        + " | comp: " + compScore;
+    console.log(finalScore);
+    //}
     //report winner or loser of final game
     reportGameOutcome(playerScore, compScore);
 
 }
-game();
+//game();
+
+//create three buttons, one for each selection.
+const rockButton = document.createElement('button');
+document.body.appendChild(rockButton);
+rockButton.textContent = "rock-solid";
+rockButton.classList.add('rock');
+
+const paperButton = document.createElement('button');
+document.body.appendChild(paperButton);
+
+const scissorsButton = document.createElement('button');
+document.body.appendChild(scissorsButton);
+
+//add an event listener to the buttons that call playRound()
+rockButton.addEventListener('click', (e) => playRound(e));
+//with the correct playerSelection every time a button is clicked
