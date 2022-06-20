@@ -1,17 +1,71 @@
-//TODO
-//bug: clicking a button multiple times keeps creating divs
-//bug: can't stretch a single string across multiple lines
-//     using a backslash (\) like in python- could be my editor?
-//     (will use +'s for now)
 //bug: pressing ESC crashes the program - related to null
+//todo: after a draw, another round being played ..
+//todo: break computeRoundWiner into 2 functions
+//  roundOutcome(), updateScore()
 
 //rock paper scissors vs. the computer
 console.log("Welcome to rock, paper scissors!");
 
+//create three buttons, one for each selection.
+const rockButton = createButton('rock');
+const paperButton = createButton('paper');
+const scissorsButton = createButton('scissors');
+
+
+//create a display for round outcome with in a DOM element
+const resultField = document.createElement('div');
+document.body.appendChild(resultField);
+
+
+//listen to button clicks to trigger playing a round
+const buttons = [rockButton, paperButton, scissorsButton];
+
+for (button of buttons) {
+    startButtonListener(button);
+}
+
+//create a DOM element for keeping score
+//one for player and one for the computer
+const playerScoreDiv = document.createElement('div');
+document.body.appendChild(playerScoreDiv);
+
+const computerScore = document.createElement('div');
+document.body.appendChild(computerScore);
+
+//initialize both scores to 0
+playerScoreDiv.textContent = 0;
+computerScore.textContent = 0;
+
+//wait for a button to be clicked
+function startButtonListener(button) {
+    button.addEventListener('click', playRound);
+}
+
+//when clicked, increment the relevant score
+function playRound(eventObject) {
+    const playerSelection = eventObject.target.classList.value;
+    const compSelection = computerPlay();
+    //compare both choices
+    computeRoundWinner(playerSelection, compSelection);
+    declareWinnerIfDone(computerScore, playerScoreDiv, buttons);
+}//end of playRound
+//announce the winner of the game once one player reaches
+//5 points -> at declareWinnerIfDone
+
+//remove event listeners
+
+//brain-dump
+
+//the code feels too complicated to me.
+//it's hard to focus.
+//let's try simplifying things...
+
+
+
 function rejectBadInput(playerSelection) {
     //deny anything that isn't rock/paper/scissors:
     //account for both capitalizated / lowercase input
-    playerSelection = playerSelection.toLowerCase()
+    playerSelection = playerSelection.toLowerCase();
     //make sure user input is one of the three
     if (playerSelection == "rock") {
     }
@@ -23,26 +77,7 @@ function rejectBadInput(playerSelection) {
         console.log("your input: ", playerSelection, "was rejected");
     }
     return playerSelection;
-    /*
-    //alternative version with logical operators
-    if ((playerSelection != "rock")
-         && (playerSelection != "paper")
-         && (playerSelection != "scissors")) {
-         console.log("your input: ", playerSelection, "was rejected");
-    }
-    */
 }
-
-/*
-function playerPlay() {
-    //prompt the user to select rock,paper or scissors
-    let playerSelection = prompt("pick one: ")
-    playerSelection = rejectBadInput(playerSelection);
-    console.log("You've picked ", playerSelection, "!");
-
-    return playerSelection;
-}
-*/
 
 //have the computer make it's own random selection
 
@@ -85,149 +120,94 @@ function computerPlay() {
     return compSelection;
 }
 
-//const let compSelection = undefined; -> breaks program
 
-function playRound(eventObject) {
-    const playerSelection = eventObject.target.classList.value;
-    const compSelection = computerPlay();
+function declareWinnerIfDone(computerScore, playerScoreDiv, buttons) {
+    if (computerScore.textContent == 5) {
+        if (playerScoreDiv.textContent == 5) {
+            displayResult("it's a draw!");
+        }
+        else {
+            displayResult("computer wins!");
+            console.log(computerScore);
+        }
+    }
+    else if (playerScoreDiv.textContent == 5) {
+        displayResult("player wins!");
+        console.log("player wins!");
+    }
+}
 
-    //compare both choices
+function computeRoundWinner(playerSelection, compSelection) {
     //
     //option 1: same choice (draw)
     if (playerSelection === compSelection) {
         displayResult("it's a tie!");
-        return ("it's a tie!")
+        ++playerScoreDiv.textContent;
+        ++computerScore.textContent;
+        return ("it's a tie!");
     }
     //other options: user | computer
     //option 2: rock | paper 
     //option 3: rock | scissors
     else if (playerSelection === "rock") {
         if (compSelection === "paper") {
-            return ("You lost!")
+            ++computerScore.textContent;
+            displayResult("You lost!");
+            return ("You lost!");
         }
         else if (compSelection === "scissors") {
-            return ("You win!")
+            ++playerScoreDiv.textContent;
+            displayResult("You win!");
+            return ("You win!");
         }
         else {
-            return ("Something went wrong when comparing choices")
+            displayResult("Something went wrong when comparing choices");
+            return ("Something went wrong when comparing choices");
         }
     }
     //option 4: paper | scissors
     //option 5: paper | rock
     else if (playerSelection === "paper") {
         if (compSelection === "scissors") {
-            return ("You lost!")
+            ++computerScore.textContent;
+            displayResult("You lost!");
+            return ("You lost!");
         }
         if (compSelection === "rock") {
-            return ("You win!")
+            ++playerScoreDiv.textContent;
+            displayResult("You win!");
+            return ("You win!");
         }
     }
     //option 6: scissors | rock 
     //option 7: scissors | paper
     else if (playerSelection === "scissors") {
         if (compSelection === "rock") {
-            return ("You lost!")
+            ++computerScore.textContent;
+            displayResult("You lost!");
+            return ("You lost!");
         }
         if (compSelection === "paper") {
-            return ("You win!")
+            ++playerScoreDiv.textContent;
+            displayResult("You win!");
+            return ("You win!");
         }
     }
     else {
         console.log("something went wrong when deciding the outcome");
+        displayResult("something went wrong when deciding the outcome");
         return ("something went wrong when deciding the outcome");
     }// end of if statement
-}//end of playRound
-
-
-function keepScore(playerScore, compScore, outcome) {
-    if (outcome === "You win!") {
-        ++playerScore;
-    }
-    else if (outcome === "You lost!") {
-        ++compScore;
-    }
-    else {
-        console.log("Failed to keep score this round");
-    }
-    return playerScore, compScore;
 }
 
-function reportGameOutcome(playerScore, compScore) {
-    console.log("The outcome of this 5-round game...");
-    if (playerScore > compScore) {
-        console.log("You are declared the winner :)");
-    }
-    else if (playerScore < compScore) {
-        console.log("You are declared the loser :(");
-    }
-    else if (playerScore === compScore) {
-        console.log("it's a draw!");
-    }
-    else {
-        console.log("Failed to compute the outcome of the match.");
-    }
-}
-
-
-//play a a few rounds
-//while keeping score
-function game() {
-    let playerScore = 0;
-    let compScore = 0;
-    //for (i = 0; i < 5; ++i) {
-    playerSelection = playerPlay();
-    compSelection = computerPlay();
-    let outcome = (playRound(playerSelection, compSelection));
-    console.log(outcome);
-    if (outcome === "You win!") {
-        ++playerScore;
-    }
-    else if (outcome === "You lost!") {
-        ++compScore;
-    }
-    else if (outcome === "it's a tie!") {
-        ++compScore;
-        ++playerScore;
-    }
-    else {
-        console.log("Failed to keep score this round");
-    }
-    let finalScore = "score: \n\player: " + playerScore
-        + " | comp: " + compScore;
-    console.log(finalScore);
-    //}
-    //report winner or loser of final game
-    reportGameOutcome(playerScore, compScore);
-
-}
-//game();
-
-//create three buttons, one for each selection.
-const rockButton = document.createElement('button');
-document.body.appendChild(rockButton);
-rockButton.textContent = "rock";
-rockButton.classList.add('rock');
-
-const paperButton = document.createElement('button');
-document.body.appendChild(paperButton);
-paperButton.textContent = "paper";
-paperButton.classList.add('paper');
-
-const scissorsButton = document.createElement('button');
-document.body.appendChild(scissorsButton);
-scissorsButton.textContent = "scissors";
-scissorsButton.classList.add('scissors');
-
-//add an event listener to the buttons that call playRound()
-//with the correct playerSelection every time a button is clicked
-rockButton.addEventListener('click', (e) => playRound(e));
-paperButton.addEventListener('click', (e) => playRound(e));
-scissorsButton.addEventListener('click', (e) => playRound(e));
-
-//create a DOM element that will display the result of a round
-
-function displayResult(result) {
-    const resultField = document.createElement('div');
-    document.body.appendChild(resultField);
+function displayResult(result) { //call this from playRound()
     resultField.textContent = result;
+}
+
+function createButton(buttonName) {
+    const DOMObject = document.createElement('button');
+    document.body.appendChild(DOMObject);
+    DOMObject.textContent = buttonName;
+    DOMObject.classList.add(buttonName);
+    return DOMObject;
 }
