@@ -19,11 +19,6 @@ const buttons = [rockButton, paperButton, scissorsButton];
 
 startButtonListeners(buttons);
 
-function startButtonListeners(button) {
-    for (button of buttons) {
-        button.addEventListener('click', playRound);
-    }
-}
 
 
 //create a DOM element for keeping score
@@ -38,6 +33,11 @@ document.body.appendChild(computerScore);
 playerScoreDiv.textContent = 0;
 computerScore.textContent = 0;
 
+function startButtonListeners(button) {
+    for (button of buttons) {
+        button.addEventListener('click', playRound);
+    }
+}
 
 //when clicked, increment the relevant score
 function playRound(listenerEventObject) {
