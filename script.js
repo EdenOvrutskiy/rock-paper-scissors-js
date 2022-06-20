@@ -1,7 +1,4 @@
-//bug: pressing ESC crashes the program - related to null
-//todo: after a draw, another round being played ..
-//todo: break computeRoundWiner into 2 functions
-//  roundOutcome(), updateScore()
+//todo: too many "global" variables? - 
 
 //rock paper scissors vs. the computer
 console.log("Welcome to rock, paper scissors!");
@@ -20,9 +17,14 @@ document.body.appendChild(resultField);
 //listen to button clicks to trigger playing a round
 const buttons = [rockButton, paperButton, scissorsButton];
 
-for (button of buttons) {
-    startButtonListener(button);
+startButtonListeners(buttons);
+
+function startButtonListeners(button) {
+    for (button of buttons) {
+        button.addEventListener('click', playRound);
+    }
 }
+
 
 //create a DOM element for keeping score
 //one for player and one for the computer
@@ -36,31 +38,27 @@ document.body.appendChild(computerScore);
 playerScoreDiv.textContent = 0;
 computerScore.textContent = 0;
 
-//wait for a button to be clicked
-function startButtonListener(button) {
-    button.addEventListener('click', playRound);
-}
 
 //when clicked, increment the relevant score
-function playRound(eventObject) {
-    const playerSelection = eventObject.target.classList.value;
+function playRound(listenerEventObject) {
+    const playerSelection = listenerEventObject.target.classList.value;
     const compSelection = computerPlay();
     //compare both choices
-    computeRoundWinner(playerSelection, compSelection);
-    declareWinnerIfDone(computerScore, playerScoreDiv, buttons);
+    const winner = determineRoundWinner(playerSelection, compSelection);
+    updateScore(winner);
+    declareRoundWinner(winner);
+    if (isGameOver()) {
+        declareGameWinner(winner);
+        //removeEventListeners
+        stopButtonListeners(buttons);
+    }
 }//end of playRound
-//announce the winner of the game once one player reaches
-//5 points -> at declareWinnerIfDone
 
-//remove event listeners
-
-//brain-dump
-
-//the code feels too complicated to me.
-//it's hard to focus.
-//let's try simplifying things...
-
-
+function stopButtonListeners(buttons) {
+    for (button of buttons) {
+        button.removeEventListener('click', playRound);
+    }
+}
 
 function rejectBadInput(playerSelection) {
     //deny anything that isn't rock/paper/scissors:
@@ -121,87 +119,77 @@ function computerPlay() {
 }
 
 
-function declareWinnerIfDone(computerScore, playerScoreDiv, buttons) {
-    if (computerScore.textContent == 5) {
-        if (playerScoreDiv.textContent == 5) {
-            displayResult("it's a draw!");
-        }
-        else {
-            displayResult("computer wins!");
-            console.log(computerScore);
-        }
-    }
-    else if (playerScoreDiv.textContent == 5) {
-        displayResult("player wins!");
-        console.log("player wins!");
-    }
+//break into 2: 
+//isGameOver()
+//displayFinalWinner()
+
+function isGameOver() {
+    //if at least one of the scores is 5, game is over
+    return (computerScore.textContent == 5 ||
+        playerScoreDiv.textContent == 5);
 }
 
-function computeRoundWinner(playerSelection, compSelection) {
-    //
-    //option 1: same choice (draw)
-    if (playerSelection === compSelection) {
-        displayResult("it's a tie!");
+
+function updateScore(roundWinner) {
+    if (roundWinner == 'player') {
         ++playerScoreDiv.textContent;
+    }
+    else if (roundWinner == 'computer') {
         ++computerScore.textContent;
-        return ("it's a tie!");
+    }
+    return;
+}
+function determineRoundWinner(playerSelection, compSelection) {
+    //option 1: same choice (all draws)
+    if (playerSelection === compSelection) {
+        return ("neither");
     }
     //other options: user | computer
     //option 2: rock | paper 
     //option 3: rock | scissors
     else if (playerSelection === "rock") {
         if (compSelection === "paper") {
-            ++computerScore.textContent;
-            displayResult("You lost!");
-            return ("You lost!");
+            return ("computer");
         }
         else if (compSelection === "scissors") {
-            ++playerScoreDiv.textContent;
-            displayResult("You win!");
-            return ("You win!");
+            return ("player");
         }
         else {
-            displayResult("Something went wrong when comparing choices");
-            return ("Something went wrong when comparing choices");
+            return ("Error at determineRoundWinner()");
         }
     }
     //option 4: paper | scissors
     //option 5: paper | rock
     else if (playerSelection === "paper") {
         if (compSelection === "scissors") {
-            ++computerScore.textContent;
-            displayResult("You lost!");
-            return ("You lost!");
+            return ("computer");
         }
         if (compSelection === "rock") {
-            ++playerScoreDiv.textContent;
-            displayResult("You win!");
-            return ("You win!");
+            return ("player");
         }
     }
     //option 6: scissors | rock 
     //option 7: scissors | paper
     else if (playerSelection === "scissors") {
         if (compSelection === "rock") {
-            ++computerScore.textContent;
-            displayResult("You lost!");
-            return ("You lost!");
+            return ("computer");
         }
         if (compSelection === "paper") {
-            ++playerScoreDiv.textContent;
-            displayResult("You win!");
-            return ("You win!");
+            return ("player");
         }
     }
     else {
-        console.log("something went wrong when deciding the outcome");
-        displayResult("something went wrong when deciding the outcome");
-        return ("something went wrong when deciding the outcome");
+        return ("Error!");
     }// end of if statement
 }
 
-function displayResult(result) { //call this from playRound()
-    resultField.textContent = result;
+
+function declareRoundWinner(result) {
+    resultField.textContent = result + " won the round!";
+}
+
+function declareGameWinner(result) {
+    resultField.textContent = result + " won the game!!!";
 }
 
 function createButton(buttonName) {
